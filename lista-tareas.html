@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/4d8d99ca21.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./styles/lista-tareas.css">
+  <title>ToDo</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index.html">My ToDo's</a>
+    </nav>
+
+    <div class="user-info">
+      <p id="usuario">username</p>
+      <div class="user-image"></div>
+    </div>
+  </header>
+
+
+  <form class="nueva-tarea">
+    <div class="toggle"></div>
+    <input type="text" placeholder="Nueva tarea" id="tarea">
+    <button>
+      <img src="./assets/plus.png" alt="Agregar Tarea">
+    </button>
+  </form>
+
+<div class="contenedor">
+  <div class="editar">
+    <i class="far fa-window-close"></i>
+    <form class="nueva-descripcion">
+      <input type="text" placeholder="Nueva descripcion" id="nueva-descripcion">
+      <div class="seleccion">
+        <div id="aceptar">Aceptar</div>
+        <div id="cancelar">Cancelar</div>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <ul class="tareas-pendientes">
+    <!--<li class="tarea">
+      <div class="not-done"></div>
+      <div class="descripcion">
+        <p class="nombre">Mi hermosa tarea</p>
+        <p class="timestamp">Creada: 19/04/20</p>
+      </div>
+    </li>-->
+  </ul>
+
+  <h2 class="titulo-terminadas">Tareas terminadas</h2>
+
+  <ul class="tareas-terminadas">
+    <!-- <li class="tarea">
+      <div class="not-done"></div>
+      <div class="descripcion">
+        <p class="nombre">Mi hermosa tarea</p>
+        <p class="timestamp">Creada: 19/04/20</p>
+      </div>
+    </li> -->
+  </ul>
+ <script src="scripts/script3.js"></script>
+</body>
+</html>
