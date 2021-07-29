@@ -9,8 +9,6 @@ function formatoFecha(fecha){
 }
 
 //let date = nuevaTarea.createdAt.slice(2,10).replace(/-/g,"/")
-//
-
 
 /**----------------------------------------- */
 
@@ -135,7 +133,6 @@ function nuevaTarea() {
 nuevaTarea(); //Llamado inical para agregar nuevas tareas
 
 
-
 /**------------------Pasar tarea a estado teminada----------------------------*/
 function terminarTarea() {
 
@@ -143,31 +140,51 @@ function terminarTarea() {
     for(i=0; i<toggle.length; i++){
         toggle[i].addEventListener("click",function (e) {
             e.preventDefault(); 
-            
-            let elementoPadre= e.target.parentElement; //Obtengo el elemento padre
-            let id = elementoPadre.dataset.id; //obtengo el data-atribute del elemento padre
-            let completada = JSON.parse(elementoPadre.dataset.completada);//obtengo el data-atribute del elemento padre
-        
-            /** Put - cambiar estado de tarea a completada  (solo se puede cambiar cuando estan cargadas)*/  
-            fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`,{
-                "method": "PUT",
-                "headers": {
-                    "Authorization":autorizacion,
-                    "content-type":"application/json"
-                    },
-                "body":JSON.stringify({
-                    "completed": !completada 
+
+            Swal.fire({
+                title: '¿Quieres cambiar de estado tu tarea?',
+                text: "Estas seguro de este cambio",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#8E64C5',
+                cancelButtonColor: '#8E64C5',
+                confirmButtonText: 'Si, cambiar',
+                cancelButtonText: 'No, cancelar'
+              }).then((result) => {
+                if (result.isConfirmed) {
+
+                    let elementoPadre= e.target.parentElement; //Obtengo el elemento padre
+                    let id = elementoPadre.dataset.id; //obtengo el data-atribute del elemento padre
+                    let completada = JSON.parse(elementoPadre.dataset.completada);//obtengo el data-atribute del elemento padre
+                
+                    /** Put - cambiar estado de tarea a completada  (solo se puede cambiar cuando estan cargadas)*/  
+                    fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`,{
+                        "method": "PUT",
+                        "headers": {
+                            "Authorization":autorizacion,
+                            "content-type":"application/json"
+                            },
+                        "body":JSON.stringify({
+                            "completed": !completada 
+                            })
+                        })
+                    .then(function(response){
+                        return response.json();
                     })
-                })
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(info){
-                cargarTareas();
-            })
-            .catch(function(e){
-                console.log("Error: "+ e);
-            })
+                    .then(function(info){
+                        cargarTareas();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Estado de tarea cambiado exitosamente',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                    })
+                    .catch(function(e){
+                        console.log("Error: "+ e);
+                    })   
+                }
+              })
         })
     }   
 }
@@ -192,7 +209,6 @@ function editarTarea() {
             cerrar.addEventListener("click", function () {
                 contenedor.classList.remove("show");  
             })
-
 
             let botonAceptar =qs("#aceptar");
             botonAceptar.addEventListener("click",function() {
@@ -246,26 +262,46 @@ function eliminarTarea() {
         for(i=0; i<trash.length; i++){
             trash[i].addEventListener("click",function (e) {
                 e.preventDefault(); 
+
+                Swal.fire({
+                    title: '¿Quieres eliminar esta tarea?',
+                    text: "Estos cambios no podran ser revertidos, ¿estas seguro?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#8E64C5',
+                    cancelButtonColor: '#8E64C5',
+                    confirmButtonText: 'Si, eliminar',
+                    cancelButtonText: 'No, cancelar'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                        let elementoPadre= e.target.parentElement; //Obtengo el elemento padre
+                        let id = elementoPadre.dataset.id; //obtengo el data-atribute del elemento padre
             
-                let elementoPadre= e.target.parentElement; //Obtengo el elemento padre
-                let id = elementoPadre.dataset.id; //obtengo el data-atribute del elemento padre
-            
-                /** Delete - borrar tarea  (solo se puede borrar cuando estan cargadas)*/
-                fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`,{
-                    "method": "DELETE",
-                    "headers": {
-                        "Authorization":autorizacion,
-                        "content-type":"application/json"
-                        }
-                    })
-                .then(function(response){
-                    return response.json();
-                })
-                .then(function(info){
-                    cargarTareas();
-                })
-                .catch(function(e){
-                    console.log("Error: "+ e);
+                        /** Delete - borrar tarea  (solo se puede borrar cuando estan cargadas)*/
+                        fetch(`https://ctd-todo-api.herokuapp.com/v1/tasks/${id}`,{
+                            "method": "DELETE",
+                            "headers": {
+                                "Authorization":autorizacion,
+                                "content-type":"application/json"
+                                }
+                            })
+                        .then(function(response){
+                            return response.json();
+                        })
+                        .then(function(info){
+                            cargarTareas();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Tarea eliminada exitosamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        })
+                        .catch(function(e){
+                            console.log("Error: "+ e);
+                        })
+                    }
                 })
             })
         }   
